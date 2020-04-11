@@ -15,6 +15,7 @@ dep = dependency('libcurl libnfc libcjson')
 
 sources = files('''
     main.c
+    squeeze.c
 '''.split())
 
 squeezenfc = executable(
