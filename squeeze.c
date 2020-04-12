@@ -172,9 +172,7 @@ void _playlist_operation(const char *action)
     cJSON_AddItemToObject(root, "params", params);
 
     tmp = cJSON_PrintUnformatted(root);
-    printf("Body : %s\n",tmp);
-    printf("Http get : %s\n", _jsonrpc_url);
-    _http_post("http://192.168.1.12:9000/jsonrpc.js", tmp);
+    _http_post(_jsonrpc_url, tmp);
     cJSON_Delete(root);
     free(tmp);
 }
@@ -195,9 +193,7 @@ void squeeze_basic_action(const char *action)
     char *tmp;
     json = _basic_action(action);
     tmp = cJSON_PrintUnformatted(json);
-    printf("Body : %s\n",tmp);
-    printf("Http get : %s\n", _jsonrpc_url);
-    _http_post("http://192.168.1.12:9000/jsonrpc.js", tmp);
+    _http_post(_jsonrpc_url, tmp);
     cJSON_Delete(json);
     free(tmp);
 }
@@ -225,9 +221,7 @@ void squeeze_volume_set(int volume)
     cJSON_AddItemToObject(root, "params", params);
 
     tmp = cJSON_PrintUnformatted(root);
-    printf("Body : %s\n",tmp);
-    printf("Http get : %s\n", _jsonrpc_url);
-    _http_post("http://192.168.1.12:9000/jsonrpc.js", tmp);
+    _http_post(_jsonrpc_url, tmp);
     cJSON_Delete(root);
     free(tmp);
 }
@@ -255,11 +249,8 @@ int squeeze_volume_get(void)
     cJSON_AddItemToObject(root, "params", params);
     char *req = cJSON_PrintUnformatted(root);
     cJSON_Delete(root);
-    printf("Request : %s\n", req);
-    char *resp = _http_post("http://192.168.1.12:9000/jsonrpc.js", req);
+    char *resp = _http_post(_jsonrpc_url, req);
     free(req);
-
-    printf("Response : %s\n", resp);
     root = cJSON_Parse(resp);
     cJSON * result = cJSON_GetObjectItemCaseSensitive(root,"result");
     cJSON *mixer_volume = cJSON_GetObjectItemCaseSensitive(result, "mixer volume");
@@ -304,16 +295,12 @@ void squeeze_load_playlist(unsigned int id)
     cJSON_AddItemToArray(cmd, cJSON_CreateString("cmd:load"));
     cJSON_AddItemToArray(cmd, cJSON_CreateString("menu:1"));
     snprintf(tmp, sizeof(tmp), "playlist_id:%d", _playlists[id].id);
-    printf("%s\n", tmp);
     cJSON_AddItemToArray(cmd, cJSON_CreateString(tmp));
     cJSON_AddItemToArray(cmd, cJSON_CreateString("useContextMenu:1"));
     cJSON_AddItemToArray(params, cmd);
     cJSON_AddItemToObject(root, "params", params);
     char *body = cJSON_PrintUnformatted(root);
-   
-    printf("Playing id %d : %s\n", _playlists[id].id, _playlists[id].name);
-    printf("Body : %s\n", body);
-    _http_post("http://192.168.1.12:9000/jsonrpc.js", body);
+    _http_post(_jsonrpc_url, body);
     free(body);
     cJSON_Delete(root);
 }
@@ -323,9 +310,7 @@ void squeeze_reload_playlists(void)
     cJSON *json;
     json = _list_playlists();
     char *req = cJSON_PrintUnformatted(json);
-    printf("Request : %s\n", req);
-    char *resp = _http_post("http://192.168.1.12:9000/jsonrpc.js", req);
-    printf("Response : %s\n", resp);    
+    char *resp = _http_post(_jsonrpc_url, req);
     cJSON * root = cJSON_Parse(resp);
     cJSON * result = cJSON_GetObjectItemCaseSensitive(root,"result");
 
