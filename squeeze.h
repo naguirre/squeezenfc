@@ -5,6 +5,10 @@ typedef struct _Playlist {
     unsigned int id;
 }Playlist;
 
+void squeeze_next_song(void);
+void squeeze_prev_song(void);
+int squeeze_volume_get(void);
+void squeeze_volume_set(int volume);
 void squeeze_reload_playlists(void);
 void squeeze_load_playlist(unsigned int playlist_id);
 void squeeze_basic_action(const char *action);
