@@ -112,7 +112,7 @@ int main(int argc, const char *argv[])
             }
 
             printf("New serial detected : %s\n", serial);
-            system("aplay ding.wav");
+            system("aplay /usr/share/squeezenfc/ding.wav");
 
             if (!strcmp(serial, PAUSE_ID))
             {
