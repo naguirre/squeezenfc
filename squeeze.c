@@ -9,7 +9,7 @@
 static char *_mac_addr = NULL;
 static char _jsonrpc_url[4096];
 
-static Playlist _playlists[64];
+static Playlist _playlists[4096];
 static unsigned int _nb_playlists = 0;
 
 typedef struct _http_data {
